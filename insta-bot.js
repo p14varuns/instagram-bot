@@ -2,14 +2,23 @@ const puppeteer = require('puppeteer');
 
 const username = process.argv[2];
 const password = process.argv[3];
+const tag = process.argv[4];
 
-if(!username | !password){
-  console.error("Missing Login Credentials");
+if(!username | !password | !tag){
+  console.error("Missing Login Credentials or Hashtag");
   return;
 }
 
+const comments = [
+  "Great Post!",
+  "Lovely post! Pls checkout my work as well",
+  "Excellent work!",
+  "Wow! Pls have a look at my work too"
+];
+var commentIndex = 0;
+const commentLen = comments.length;
+
 const url = "https://www.instagram.com/";
-tag = "painting";
 const tagURL = "https://www.instagram.com/explore/tags/" + tag;
 
 async function run () {
@@ -54,7 +63,7 @@ async function run () {
       await tagPage.waitFor(5000);
       console.log("clicking next now");
       await tagPage.tap("a._65Bje.coreSpriteRightPaginationArrow");
-      await tagPage.waitFor(10000);
+      await tagPage.waitFor(6000);
     }  catch (err) {
      console.error(err);
      throw new Error('page.goto/waitForSelector timed out.');
@@ -71,17 +80,25 @@ reviewPostandAction = async (tagPage) => {
   const element = await tagPage.$("button.sqdOP.yWX7d._8A5w5 > span");
   const text = await tagPage.evaluate(element => element.textContent, element);
   var likes = Number(text.replace(",",""));
-  if(likes > 500){
+  if(likes > 50){
     const likeElement = await tagPage.$("span.fr66n > button > svg");
     const likeStatus = await tagPage.evaluate(likeElement => likeElement.getAttribute("aria-label"), likeElement);
     console.log(likeStatus);
     if(likeStatus == "Like"){
+      // Like and Comment on this Post
       console.log("Like this Post");
-      await tagPage.waitFor(5000);
+      await tagPage.waitFor(2000);
       await tagPage.tap("span.fr66n > button");
+      console.log("Comment on Post");
+      await tagPage.focus('textarea.Ypffh');
+      await tagPage.keyboard.type(comments[commentIndex]);
+      commentIndex = (commentIndex+1) % commentLen;
+      await tagPage.waitFor(1000);
+      await tagPage.tap("form.X7cDz > button.sqdOP.yWX7d.y3zKF");
+      await tagPage.waitFor(3000);
 
     } else if(likeStatus == "Unlike"){
-      console.log("Already liked. Move to next Post");  
+      console.log("Already liked. Move to next Post");
     } else{
       console.log("This shouldn't happen ideally " + likeStatus);
     }

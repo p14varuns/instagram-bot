@@ -1,7 +1,7 @@
 {
   "name": "pup",
   "version": "1.0.0",
-  "description": "",
+  "description": "Likes posts on instagram",
   "main": "insta-bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,5 +10,13 @@
   "license": "ISC",
   "dependencies": {
     "puppeteer": "^3.0.2"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://p14varuns@github.com/p14varuns/instagram-bot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/p14varuns/instagram-bot/issues"
+  },
+  "homepage": "https://github.com/p14varuns/instagram-bot#readme"
 }
