@@ -11,9 +11,9 @@ if(!username | !password | !tag){
 
 const comments = [
   "Great Post!",
-  "Lovely post! Pls checkout my work as well",
-  "Excellent work!",
-  "Wow! Pls have a look at my work too"
+  "Lovely post!",
+  "Excellent work!"
+  //"Wow! Pls have a look at my work too"
 ];
 var commentIndex = 0;
 const commentLen = comments.length;
@@ -63,7 +63,7 @@ async function run () {
       await tagPage.waitFor(5000);
       console.log("clicking next now");
       await tagPage.tap("a._65Bje.coreSpriteRightPaginationArrow");
-      await tagPage.waitFor(6000);
+      await tagPage.waitFor(10000);
     }  catch (err) {
      console.error(err);
      throw new Error('page.goto/waitForSelector timed out.');
@@ -87,7 +87,7 @@ reviewPostandAction = async (tagPage) => {
     if(likeStatus == "Like"){
       // Like and Comment on this Post
       console.log("Like this Post");
-      await tagPage.waitFor(2000);
+      await tagPage.waitFor(3000);
       await tagPage.tap("span.fr66n > button");
       console.log("Comment on Post");
       await tagPage.focus('textarea.Ypffh');
@@ -95,7 +95,7 @@ reviewPostandAction = async (tagPage) => {
       commentIndex = (commentIndex+1) % commentLen;
       await tagPage.waitFor(1000);
       await tagPage.tap("form.X7cDz > button.sqdOP.yWX7d.y3zKF");
-      await tagPage.waitFor(3000);
+      await tagPage.waitFor(5000);
 
     } else if(likeStatus == "Unlike"){
       console.log("Already liked. Move to next Post");
